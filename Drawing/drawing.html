@@ -216,8 +216,12 @@
 
     <section class="board-container">
       <div class="board-toolbar">
-        <button class="tool-btn active" data-tool="pen">Pen</button>
-        <button class="tool-btn" data-tool="eraser">Eraser</button>
+<button class="tool-btn active" data-tool="pen">Pen</button>
+<button class="tool-btn" data-tool="eraser">Eraser</button>
+<button class="tool-btn" data-tool="highlighter">Highlighter</button>
+<button class="tool-btn" data-tool="marker">Marker</button>
+<button class="tool-btn" data-tool="pencil">Pencil</button>
+<button class="tool-btn" data-tool="rainbow">Rainbow</button>
 
         <span style="font-size:13px;margin-left:8px;">Color</span>
         <input type="color" id="colorPicker" value="#000000" />
@@ -241,6 +245,7 @@
   </footer>
 
   <script>
+    let shapeStart = null;
     // 1. Firebase setup – replace with your real config
     const firebaseConfig = {
     apiKey: "AIzaSyCsxLxY1CNS0VAgrv5XTq8nIgdoKx31i7M",
@@ -321,26 +326,85 @@
       };
     }
 
-    function applyStroke(s) {
-      ctx.save();
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
+   function applyStroke(s) {
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
 
-      if (s.tool === "eraser") {
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.strokeStyle = "rgba(0,0,0,1)";
-      } else {
-        ctx.globalCompositeOperation = "source-over";
-        ctx.strokeStyle = s.color || "#000000";
-      }
+  // Default settings
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = s.size;
 
-      ctx.lineWidth = s.size || 4;
-      ctx.beginPath();
-      ctx.moveTo(s.x1, s.y1);
-      ctx.lineTo(s.x2, s.y2);
-      ctx.stroke();
-      ctx.restore();
-    }
+  // Brush types
+  switch (s.tool) {
+    case "eraser":
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.strokeStyle = "rgba(0,0,0,1)";
+      break;
+
+case "highlighter":
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = s.size * 3;
+
+  // Each stroke is semi-transparent.
+  // Overlapping strokes darken naturally.
+  ctx.globalAlpha = 0.22;
+  break;
+
+
+case "marker":
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = s.size * 2.2;
+  ctx.globalAlpha = 1.0;
+  break;
+
+
+case "pencil":
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color + "AA"; // 66% opacity
+  ctx.lineWidth = s.size * 0.7;
+  ctx.globalAlpha = 0.7;
+  break;
+
+  case "calligraphy":
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = s.size * 2;
+
+  // Angle the nib
+  ctx.lineCap = "butt";
+  ctx.lineJoin = "miter";
+
+  // Slight angle effect
+  ctx.transform(1, 0.2, -0.2, 1, 0, 0);
+  break;
+
+  case "highlighter":
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = s.size * 3;
+  ctx.globalAlpha = 0.22; // darkens each new stroke
+  break;
+
+
+    case "rainbow":
+      const hue = (s.ts % 360);
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+      break;
+
+
+  }
+
+  // Draw the stroke
+  ctx.beginPath();
+  ctx.moveTo(s.x1, s.y1);
+  ctx.lineTo(s.x2, s.y2);
+  ctx.stroke();
+  ctx.restore();
+}
 
     function sendStroke(stroke) {
       strokesRef.push(stroke);
@@ -352,6 +416,11 @@
       const pos = getPos(e);
       lastX = pos.x;
       lastY = pos.y;
+      if (tool === "line" || tool === "rect" || tool === "circle") {
+  shapeStart = getPos(e);
+  return;
+}
+
     }
 
     function draw(e) {
@@ -382,6 +451,27 @@
       if (!drawing) return;
       e.preventDefault();
       drawing = false;
+      if (shapeStart && (tool === "line" || tool === "rect" || tool === "circle")) {
+  const end = getPos(e);
+
+  const stroke = {
+    tool: tool,
+    x1: shapeStart.x,
+    y1: shapeStart.y,
+    x2: end.x,
+    y2: end.y,
+    color: strokeColor,
+    size: strokeSize,
+    clientId: clientId,
+    ts: Date.now()
+  };
+
+  applyStroke(stroke);
+  sendStroke(stroke);
+
+  shapeStart = null;
+}
+
     }
 
     canvas.addEventListener("mousedown", startDraw);
