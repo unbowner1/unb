@@ -17,7 +17,8 @@
     </style>
 </head>
 <body>
-    
+    <script type="text/javascript" src="https://www.authpro.com/auth/unbowner1/?action=pp">
+</script>
     <div id="gameContainer" class="game-embed-container">
         <div id="buttonWrapper" class="button-wrapper">
             <div class="logo-text">UNB Games</div>
@@ -135,6 +136,5 @@ prepareGameContent();
 function launchAltGame(isInline){if(!readyHtmlContent)return alert("Game is not ready yet. Please wait.");const e=new Blob([readyHtmlContent],{type:"text/html"}),t=URL.createObjectURL(e);if(isInline){gameContainer.innerHTML="";const n=document.createElement("iframe");n.src=t,n.allow="fullscreen; autoplay; encrypted-media",n.style.width="100%",n.style.height="100%",gameContainer.appendChild(n)}else{const o=window.open(t,"_blank");o||alert("Please allow popups for this site.")}}playAltInlineBtn.addEventListener("click",()=>launchAltGame(!0)),playAltFullscreenBtn.addEventListener("click",()=>launchAltGame(!1));
     </script>
 
-<script type="text/javascript" src="https://www.authpro.com/auth/unbowner1/?action=pp">
 </script>
 </body></html>
