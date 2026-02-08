@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNB Games</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap" rel="stylesheet">
+    <title>99 Nights In The Forest</title>
     <style>
-        body {
-            font-family: 'Sour Gummy', cursive; --sb-width:5rem
-        }
-        body.sb-expanded {--sb-width: 12.5rem}
-        h1 {
+        iframe {width: 700px; height: 450px;border: none;}
+        body {background-color: #f5f5dc; font-family: 'Sour Gummy', cursive; --sb-width:5rem}
+       h1 {
             color: #32a852;
             text-align: center;
             font-size: 60px;
@@ -22,6 +20,8 @@
         p {
             color: #3e2723;
             text-align: center;
+            background-color: #f2f2ce ;
+            border-radius: 15px;
         }
         .tile-container {
             display: grid;
@@ -57,12 +57,12 @@
         main {margin-left: 5rem; padding: 1rem 2rem; transition: margin-left 0.5s ease-in-out;}
         @media (min-width: 768px) {main {margin-left: var(--sb-width);}}
     </style>
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+       <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
-<body style="background-color: #f5f5dc;" class="sb-expanded">
+<body>
     <script type="text/javascript" src="https://www.authpro.com/auth/unbowner1/?action=pp">
 </script>
-  <aside>
+      <aside>
     <nav>
       <ul>
         <li>
@@ -77,32 +77,14 @@
            <span>Games</span>
         </a>
         </li>
-        <li>
-          <a href="#" data-resize-btn>
-            <i class="bx bx-chevrons-right"></i>
-            <span>Collapse</span>
-          </a>
-        </li>
       </ul>
     </nav>
   </aside>
   <main>
-    <h1>UNB Games</h1>
-    <nav>
-    <a href="https://unbowner1.github.io/unb/games/2PlayerChess.html">
-        <span>2 Player Chess</span>
-    </a>
-    <a href="https://unbowner1.github.io/unb/games/99NightsInTheForest.html">
-        <Span>99 Nights In The Forest</Span>
-    </a>
-    </nav>
+<h1>99 Nights In the Forest</h1>
+    <iframe src="/unb/iFrames/99NightsInTheForest.html"></iframe>
+    <p>Deep in a hostile wilderness, survival becomes a nightly battle in 99 Nights in the Forest Unblocked in Roblox style. What begins as simple exploration quickly turns into a test of endurance as you collect resources, hunt for food, and craft shelters to stay alive. Daytime offers a chance to scout the forest and prepare, but darkness brings stronger threats that won’t forgive mistakes. Among challenging survival titles on Classroom 6x Unblocked, this game stands out for its growing tension and need for careful planning. Campfires, defenses, and smart decisions are your only protection. Last long enough, and you might just prove you can endure all ninety-nine nights.</p>
   </main>
-  <script>
-    const resizeBtn = document.querySelector('[data-resize-btn]'); 
-    resizeBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.body.classList.toggle('sb-expanded')
-    })
-  </script>
+
 </body>
 </html>
